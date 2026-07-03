@@ -148,21 +148,21 @@ wss.on("connection", (socket) => {
           hour: "2-digit", minute: "2-digit"
         }),
       });
-
-      // 4.2 - Cliente desconectou
-      socket.on("close", () => {
-        const cliente = clientes.get(socket);
-        if (!cliente) return;
-
-        clientes.delete(socket);
-
-        broadcast({
-          tipo: "sistema",
-          texto: `${cliente.username} saiu da sala.`,
-          usuarios: listaUsuarios(),
-        });
-      });
     }
+  });
+
+  // 4.2 - Cliente desconectou (registrado uma vez, ao abrir a conexão)
+  socket.on("close", () => {
+    const cliente = clientes.get(socket);
+    if (!cliente) return;
+
+    clientes.delete(socket);
+
+    broadcast({
+      tipo: "sistema",
+      texto: `${cliente.username} saiu da sala.`,
+      usuarios: listaUsuarios(),
+    });
   });
 });
 
